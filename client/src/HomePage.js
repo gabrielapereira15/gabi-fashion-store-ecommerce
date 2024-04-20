@@ -5,9 +5,11 @@ import './HomePage.css';
 import CartComponent from './Cart';
 import LoginComponent from './Login'
 
-function HomePage() {
-    // Setting state
+function HomePage({ cartItems: propCartItems }) {
+    // Setting states
     const [productList, setProductList] = useState([]);
+    const [cart, setCart] = useState(propCartItems ?? []);
+    const [showPopup, setShowPopup] = useState(false);
 
     // Get product list from the backend
     useEffect(() => {
@@ -20,15 +22,34 @@ function HomePage() {
             });
     }, []);
 
+    const addToCart = (product) => {
+        const existingProductIndex = cart.findIndex(item => item.productName === product.productName);
+        if (existingProductIndex !== -1) {
+            const updatedCart = cart.map((item, index) => {
+                if (index === existingProductIndex) {
+                    return { ...item, quantity: item.quantity + 1 };
+                }
+                return item;
+            });
+            setCart(updatedCart);
+        } else {
+            setCart(prevCart => [...prevCart, { ...product, quantity: 1 }]);
+        }
+        setShowPopup(true); 
+        setTimeout(() => {
+            setShowPopup(false);
+        }, 2000);
+    };    
+
     // Render methods to navigate to the other pages
     const goToCart = () => {
         const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<CartComponent />);
+        root.render(<CartComponent cartItems={cart} />);
     }
 
     const goToLogin = () => {
         const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<LoginComponent />);
+        root.render(<LoginComponent cartItems={cart} />);;
     }
 
     return (
@@ -41,7 +62,7 @@ function HomePage() {
                 <ul className="menu">
                     <li><a href="" className="active">Home</a></li>
                     <li><a onClick={() => goToLogin()}>Login</a></li>
-                    <li><a onClick={() => goToCart()}>Cart</a></li>
+                    <li><a onClick={() => goToCart()}>Cart {cart.length > 0 && <span className="cart-count">{cart.length}</span>}</a></li>
                 </ul>
                 {/* Menu Button */}
                 <div className="menu-btn">
@@ -67,12 +88,19 @@ function HomePage() {
                             <div className="title">{product.productName ?? "Product Name Unavailable"}</div>
                             <div className="box">
                                 <div className="price">$ {product.value ?? "Price Unavailable"}</div>
-                                <button className="btn">Add to Cart</button>
+                                <button className="btn" onClick={() => addToCart(product)}>Add to Cart</button>
                             </div>
                         </div>
                     ))}
                 </div>
             </section>
+
+            {/* Popup feedback */}
+            {showPopup && (
+                <div className="popup">
+                    Item added to cart!
+                </div>
+            )}
 
             {/* Footer */}
             <footer>

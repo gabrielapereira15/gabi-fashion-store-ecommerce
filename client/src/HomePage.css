@@ -197,3 +197,33 @@ footer p a{
 	height: 30px;
 	width: 200px;
 }
+
+.cart-count {
+    color: white;
+    font-size: 15px;
+    align-items: center;
+    border-radius: 50%;
+    background: #648fff;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    display: inline-block; 
+    box-sizing: border-box;
+}
+
+.popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    z-index: 999;
+}
+
+
+
+  
