@@ -22,7 +22,7 @@ function LoginComponent() {
     const handleLogin = () => {
         console.log("Username:", username);
         console.log("Password:", password);
-        alert("Welcome " + {username});
+        alert("Welcome" + JSON.stringify(username));
     };
         
     return (
