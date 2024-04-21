@@ -3,8 +3,9 @@ const express = require("express");
 const mongoose =  require('mongoose');
 const cors = require('cors');
 
-// Require Product Model 
+// Require Product and User Model 
 const Product = require('./Product');
+const User = require('./User');
 
 // Require config file
 const mongoDBUrl = require('./config');
@@ -118,6 +119,109 @@ app.delete('/products/:productId', async (req, resp) => {
 
         // Return a success message
         resp.json({ message: 'Product deleted successfully' });
+    } catch (error) {
+        resp.status(500).json({ error: error.message });
+    }
+});
+
+// GET Route to Retrieve Users
+app.get('/users', async (req, resp) => {
+    try {
+        const users = await User.find();
+        resp.json(users);
+    } catch (error) {
+        resp.status(500).json({error: error.message});
+    }
+});
+
+// GET Route to Retrieve a specific user
+app.get('/users/:emailId', async (req, resp) => {
+    const emailId = req.params.email;
+    try {
+        const user = await User.findOne({emailId})
+        // If the user doesn't exist, return a 404 error
+        if (!user) {
+            return resp.status(404).json({ error: 'User not found' });
+        } else {
+            resp.json(user);
+        }
+    } catch (error) {
+        resp.status(500).json({error: error.message});
+    }
+});
+
+// POST Route to create Users
+app.post('/users', async (req, resp) => {
+    try {
+        const { name, address, phone, email, password } = req.body;
+
+        const newUser = new User({
+            name,
+            address,
+            phone,
+            email,
+            password
+        });
+
+        const savedUser = await newUser.save();
+
+        // Return the newly created user as a response
+        resp.status(201).json(savedUser);
+    } catch (error) {
+        resp.status(500).json({ error: error.message });
+    }
+});
+
+// PUT Route to update an existing user based on email
+app.put('/users/:emailId', async (req, resp) => {
+    try {
+        // Extract the email from the request parameters
+        const emailId = req.params.email;
+
+        // Extract updated email data from the request body
+        const { name, address, phone, email, password } = req.body;
+
+        // Find the user by its email in the database
+        let user = await User.findOne({ email});
+
+        // If the user doesn't exist, return a 404 error
+        if (!user) {
+            return resp.status(404).json({ error: 'User not found' });
+        }
+
+        // Update the user with the new data
+        user.name = name || user.name;
+        user.address = address || user.address;
+        user.phone = phone || user.phone;
+        user.email = email || user.email;
+        user.password = password || user.password;
+
+        // Save the updated user to the database
+        const updatedUser = await user.save();
+
+        // Return the updated product as a response
+        resp.json(updatedUser);
+    } catch (error) {
+        resp.status(500).json({ error: error.message });
+    }
+});
+
+// DELETE Route to delete an existing user based on email
+app.delete('/users/:emailId', async (req, resp) => {
+    try {
+        // Extract the email from the request parameters
+        const emailId = req.params.email
+
+        // Find the user by its email in the database and delete it
+        const deletedUser = await User.findOneAndDelete({ emailId });
+
+        // If the user doesn't exist, return a 404 error
+        if (!deletedUser) {
+            return resp.status(404).json({ error: 'User not found' });
+        }
+
+        // Return a success message
+        resp.json({ message: 'User deleted successfully' });
     } catch (error) {
         resp.status(500).json({ error: error.message });
     }
