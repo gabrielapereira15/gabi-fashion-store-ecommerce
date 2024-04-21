@@ -79,9 +79,8 @@ function CheckoutComponent({ cartItems: propCartItems }) {
                         <label htmlFor="expiration">Expiration Date:</label>
                         <input type="text" id="expiration" name="expiration" placeholder="MM/YYYY" required />
                     </div>
-                    <div className="form-group">
-                        <button type="submit" onClick={(event) => placeOrder(event)}>Place Order</button>
-                    </div>
+                    <div className="form-group"></div>
+                    <button type="submit" onClick={(event) => placeOrder(event)}>Place Order</button>
                 </form>
 
                 <div className="order-summary">
