@@ -1,23 +1,28 @@
-# Project in progress...
-
 # Ecommerce Project for Web Development Course
 
-This ecommerce project was developed as part of the Web Development course in my Mobile Solutions postgraduate program. The project utilizes React JS for the frontend, Express NodeJS for the backend, and MongoDB with Mongoose for the database.
+This ecommerce project was developed as part of the Web Development course in my Mobile Solutions postgraduate program. The project utilizes ReactJS for the frontend, Express NodeJS for the backend, and MongoDB with Mongoose for the database.
+
+## Screenshots
+
+![Home Page](assets/main_page.png)
+![Product Page](assets/product_list.png)
+![Login](assets/login_page.png)
+![Shopping Cart](assets/cart_page.png)
 
 ## Setup Instructions
 1. Clone the repository.
 2. Navigate to the `server` directory and create a `config.js` file. Set the MongoDB URL in the `config.js` file.
    Example `config.js`:
+   
    ```javascript
    module.exports = {
        mongoURI: 'YOUR_MONGODB_URL_HERE'
    };
-3. Navigate to the project root directory in your terminal.
-4. Run the following command to build the project and generate the node_modules folder in both the client and server directories:
+3. Run the following command to build the project and generate the node_modules folder in both the client and server directories:
 `npm install`
-5. To start the server, navigate to the server directory and run:
+4. To start the server, navigate to the server directory and run:
 `npm start`
-6. To start the client, navigate to the client directory and run:
+5. To start the client, navigate to the client directory and run:
 `npm start`
 
 ## Resources
