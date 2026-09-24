@@ -1,109 +1,280 @@
-# Ecommerce Project for Web Development Course
+<div align="center">
 
-This ecommerce project was developed as part of the Web Development course in my Mobile Solutions postgraduate program. The project utilizes ReactJS for the frontend, Express NodeJS for the backend, and MongoDB with Mongoose for the database.
+# Gabi Fashion Store
+
+**A full-stack demo boutique — React 18 + Vite on the front, Express + MongoDB behind it.**
+
+Product catalogue, persistent cart, checkout with real validation, hashed-password auth,
+and an admin panel over the REST API. Light and dark themes, responsive to 360px.
+
+[Features](#features) · [Screenshots](#screenshots) · [Run it locally](#run-it-locally) · [API](#api-reference) · [Architecture](#architecture)
+
+</div>
+
+---
+
+![Home page](assets/home-hero.png)
+
+## Features
+
+**Storefront**
+- Catalogue fetched from the API, with loading skeletons, an error state and an empty state
+- Client-side category filtering derived from the data
+- Cart persisted to `localStorage`, so it survives a refresh and a closed tab
+- Totals computed in integer cents — no floating-point drift in the subtotal, tax or total
+- Free shipping over $150, with a prompt showing how much more is needed
+
+**Checkout**
+- Inline field validation on blur and on submit, with focus moved to the first error
+- Luhn checksum on the card number and a real expiry-date check
+- Order confirmation with a reference, delivery window and totals
+
+**Accounts**
+- Registration and sign-in against the API
+- Passwords hashed with bcrypt and excluded from every query by default
+- Login returns the same message for an unknown email as for a wrong password
+
+**Admin** (`/admin`)
+- Table of the live catalogue with create, edit and delete
+- Confirmation dialog before deleting
+- Exercises every product endpoint
+
+**Design**
+- One accent colour and a single token system (`client/src/styles/tokens.css`)
+- Light and dark themes with a toggle in the nav; defaults to the OS preference
+- Responsive from 360px up, with a slide-down nav drawer on small screens
+- Keyboard-accessible: skip link, visible focus rings, `aria-invalid` + `aria-describedby` on fields
+- Respects `prefers-reduced-motion`
+
+**Browsing works without a backend** — if the API is unreachable, the storefront falls back
+to a bundled demo catalogue and says so, so the front end can be deployed on its own.
+Accounts and the admin panel still need the API.
 
 ## Screenshots
 
-![Home Page](assets/main_page.png)
-![Product Page](assets/product_list.png)
-![Login](assets/login_page.png)
-![Shopping Cart](assets/cart_page.png)
+| Product grid | Shopping bag |
+|---|---|
+| ![Product grid](assets/product-grid.png) | ![Cart](assets/cart.png) |
 
-## Setup Instructions
-1. Clone the repository.
-2. Navigate to the `server` directory and create a `config.js` file. Set the MongoDB URL in the `config.js` file.
-   Example `config.js`:
-   
-   ```javascript
-   module.exports = {
-       mongoURI: 'YOUR_MONGODB_URL_HERE'
-   };
-3. Run the following command to build the project and generate the node_modules folder in both the client and server directories:
-`npm install`
-4. To start the server, navigate to the server directory and run:
-`npm start`
-5. To start the client, navigate to the client directory and run:
-`npm start`
+| Checkout | Admin panel |
+|---|---|
+| ![Checkout](assets/checkout.png) | ![Admin](assets/admin.png) |
 
-## Resources
-- [React JS](https://reactjs.org/)
-- [Express NodeJS](https://expressjs.com/)
-- [MongoDB](https://www.mongodb.com/)
-- [Mongoose](https://mongoosejs.com/)
-- [YouTube Tutorial 1](https://www.youtube.com/watch?v=w3vs4a03y3I)
-- [YouTube Tutorial 2](https://www.youtube.com/watch?v=Eg060ApBhT4)
-- [YouTube Tutorial 3](https://www.youtube.com/watch?v=9kHO3V2Iffo)
-- [Unsplash - Free images](https://unsplash.com/s/photos/woman-clothes-style?license=free)
+| Sign in (dark) | Catalogue (dark) |
+|---|---|
+| ![Login](assets/login.png) | ![Dark mode](assets/dark-mode.png) |
 
+<div align="center">
+  <img src="assets/mobile.png" alt="Mobile layout" width="720">
+</div>
 
-# DEFAULT REACT INSTRUCTIONS
-# Getting Started with Create React App
+## Tech stack
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+| | |
+|---|---|
+| **Front end** | React 18, React Router 6, Vite 6, CSS Modules, axios |
+| **Back end** | Node.js, Express 4, Mongoose 8, bcryptjs |
+| **Database** | MongoDB |
+| **Testing** | `node:test`, supertest, mongodb-memory-server |
 
-## Available Scripts
+## Run it locally
 
-In the project directory, you can run:
+**Requirements:** Node.js 20 or newer. MongoDB is only needed for the full stack — see the
+two paths below.
 
-### `npm start`
+```bash
+git clone https://github.com/YOUR-USERNAME/gabi-fashion-store-ecommerce.git
+cd gabi-fashion-store-ecommerce
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Option A — storefront only (no database, ~30 seconds)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+The quickest way to look around. The storefront detects that the API is unreachable and
+serves the bundled demo catalogue, so browsing, the cart and checkout all work.
 
-### `npm test`
+```bash
+cd client
+npm install
+npm run dev
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Open **http://localhost:5173**. A notice at the top of the catalogue explains that the demo
+data is in use. Sign-in reports "Could not reach the server" and the admin page shows a
+"Could not reach the API" state — everything else works.
 
-### `npm run build`
+### Option B — full stack (React + Express + MongoDB)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+You need MongoDB: either running locally, or a free
+[MongoDB Atlas](https://www.mongodb.com/atlas/database) connection string.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+**1. Start the API** — in one terminal:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```bash
+cd server
+npm install
+cp .env.example .env     # then open .env and set MONGO_URI
+npm run seed             # loads the 12-piece catalogue into the database
+npm run dev              # http://localhost:8080
+```
 
-### `npm run eject`
+You should see `Connected to MongoDB.` followed by `API listening on http://localhost:8080`.
+Check it with `curl http://localhost:8080/api/health`.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+`server/.env`:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+| Variable | Default | Purpose |
+|---|---|---|
+| `MONGO_URI` | — | MongoDB connection string (required) |
+| `PORT` | `8080` | Port the API listens on |
+| `CORS_ORIGIN` | `http://localhost:5173` | Comma-separated list of allowed origins |
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+**2. Start the storefront** — in a second terminal:
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```bash
+cd client
+npm install
+cp .env.example .env     # optional — defaults to http://localhost:8080
+npm run dev              # http://localhost:5173
+```
 
-## Learn More
+Open **http://localhost:5173**.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### What to try
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- **Shop** — filter by category, add a few pieces to the bag
+- **Bag** — change quantities, then reload the page; the bag is still there
+- **Checkout** — submit it empty to see the inline validation, then pay with the test card
+  `4242 4242 4242 4242`, any future expiry and any 3 digits. Nothing is charged.
+- **Sign up** — create an account, sign out, sign back in
+- **Admin** (`/admin`) — add, edit and delete a product against the live API
+- **Theme** — the sun/moon button in the nav; it follows your OS setting by default
 
-### Code Splitting
+### Troubleshooting
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+| Symptom | Fix |
+|---|---|
+| "Showing the bundled demo catalogue — the API is not reachable" | The API is not running. Start it with `npm run dev` in `server/`. |
+| "…the API is running but has no products yet" | Run `npm run seed` in `server/`. |
+| `Missing MONGO_URI` on startup | Copy `server/.env.example` to `server/.env` and set the connection string. |
+| MongoDB connection error | Confirm MongoDB is running, or that your Atlas IP allowlist includes your address. |
+| CORS error in the browser console | Add the storefront's origin to `CORS_ORIGIN` in `server/.env`. |
 
-### Analyzing the Bundle Size
+### Scripts
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+| Directory | Command | Does |
+|---|---|---|
+| `server` | `npm run dev` | Start the API with nodemon |
+| `server` | `npm start` | Start the API |
+| `server` | `npm run seed` | Upsert the catalogue (`-- --fresh` wipes it first) |
+| `server` | `npm test` | Run the API test suite |
+| `client` | `npm run dev` | Vite dev server |
+| `client` | `npm run build` | Production build to `dist/` |
+| `client` | `npm run preview` | Serve the production build |
+| `client` | `npm run lint` | ESLint |
 
-### Making a Progressive Web App
+## Tests
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+The API suite runs against an in-memory MongoDB, so it needs no local database:
 
-### Advanced Configuration
+```bash
+cd server && npm test
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+17 tests covering product CRUD and validation, duplicate handling, bcrypt hashing,
+login success and failure, and that no endpoint ever returns a password hash.
 
-### Deployment
+## API reference
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Base URL `http://localhost:8080`.
 
-### `npm run build` fails to minify
+### Products
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+| Method | Route | Description |
+|---|---|---|
+| `GET` | `/api/products` | List all products |
+| `GET` | `/api/products/:productId` | Fetch one product |
+| `POST` | `/api/products` | Create a product |
+| `PUT` | `/api/products/:productId` | Update a product (the id itself is immutable) |
+| `DELETE` | `/api/products/:productId` | Delete a product |
+
+```bash
+curl -X POST http://localhost:8080/api/products \
+  -H "Content-Type: application/json" \
+  -d '{"productId":"suit13","productName":"Silk Wrap Dress","productType":"Dresses","productColor":"Ivory","value":189}'
+```
+
+### Auth and users
+
+| Method | Route | Description |
+|---|---|---|
+| `POST` | `/api/auth/register` | Create an account |
+| `POST` | `/api/auth/login` | Verify credentials |
+| `GET` | `/api/users` | List users (never includes passwords) |
+| `GET` | `/api/users/:email` | Fetch one user |
+| `PUT` | `/api/users/:email` | Update the user named in the URL |
+| `DELETE` | `/api/users/:email` | Delete a user |
+
+`GET /api/health` returns `{ "status": "ok" }`.
+
+## Architecture
+
+```
+client/
+├─ public/images/          12 product shots + 3 editorial images (WebP)
+└─ src/
+   ├─ components/          Navbar, Footer, ProductCard, Field, ToastStack, …
+   ├─ context/             Cart, Auth, Theme, Toast providers
+   ├─ data/                Static fallback catalogue
+   ├─ hooks/useForm.js     Controlled forms with blur/submit validation
+   ├─ lib/                 api.js (axios + fallback), money.js (cents), validation.js
+   ├─ pages/               Home, Cart, Checkout, Login, Register, Admin, NotFound
+   └─ styles/              tokens.css, global.css
+
+server/
+├─ config/db.js            Mongoose connection
+├─ data/products.js        Catalogue seed data
+├─ middleware/             asyncHandler, notFound, errorHandler
+├─ models/                 Product, User (bcrypt pre-save hook)
+├─ routes/                 products, users, auth
+├─ tests/api.test.js       Integration tests
+├─ app.js                  Express app (exported for tests)
+├─ seed.js                 Catalogue seeder
+└─ server.js               Entry point
+```
+
+**A few decisions worth noting**
+
+- **Money in cents.** Prices are stored as dollars but every total is summed as integer
+  cents (`client/src/lib/money.js`), because `128 + 124.5` in floats reaches the UI as
+  `252.49999999999997`.
+- **The cart stores a snapshot.** Only the fields the cart renders are saved, so editing a
+  product in the admin panel cannot reshape someone's saved cart.
+- **`app.js` is separate from `server.js`.** The Express app is exported without calling
+  `listen`, which is what lets supertest mount it directly.
+- **Passwords are `select: false`.** They have to be asked for explicitly, so no route can
+  leak a hash by forgetting to exclude it.
+
+## Deployment
+
+The client builds to a static bundle and includes SPA-rewrite config for both
+Netlify (`public/_redirects`) and Vercel (`vercel.json`).
+
+```bash
+cd client && npm run build      # → client/dist
+```
+
+Deploy `client/dist` anywhere static. Set `VITE_API_URL` to your deployed API, or leave it
+unset and the demo catalogue will be served. For the API, set `MONGO_URI` and `CORS_ORIGIN`
+on your host of choice.
+
+## Credits
+
+- Photography from [Unsplash](https://unsplash.com/s/photos/woman-clothes-style?license=free)
+- Typefaces: [Fraunces](https://fonts.google.com/specimen/Fraunces) and [Inter](https://fonts.google.com/specimen/Inter)
+
+Originally built for the Web Development course of my Mobile Solutions postgraduate program,
+then rebuilt as a portfolio piece.
+
+## License
+
+[MIT](LICENSE) © Gabriela Nascimento Oliveira Pereira

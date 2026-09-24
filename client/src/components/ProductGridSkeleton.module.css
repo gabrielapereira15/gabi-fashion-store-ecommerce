@@ -1,0 +1,41 @@
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+    gap: var(--space-6) var(--space-5);
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.media {
+    aspect-ratio: 3 / 4;
+    border-radius: var(--radius-md);
+}
+
+.line {
+    height: 12px;
+    border-radius: var(--radius-sm);
+}
+
+.short {
+    width: 40%;
+    margin-top: var(--space-2);
+}
+
+.tiny {
+    width: 60%;
+}
+
+.shimmer {
+    background: linear-gradient(
+            90deg,
+            var(--surface-sunken) 25%,
+            color-mix(in srgb, var(--surface-sunken) 60%, var(--surface-raised)) 37%,
+            var(--surface-sunken) 63%
+        )
+        0 0 / 200% 100%;
+    animation: shimmer 1.4s linear infinite;
+}

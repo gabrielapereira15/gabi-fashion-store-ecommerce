@@ -1,0 +1,164 @@
+/*
+ * Design tokens.
+ *
+ * One accent (clay), a warm neutral ramp, and a single type scale.
+ * Everything else in the app composes from these — no raw hex outside this file.
+ */
+
+:root {
+    /* Neutrals — warm, so photography sits on them without looking cold. */
+    --bone-50: #fdfbf9;
+    --bone-100: #faf7f3;
+    --bone-200: #f2ece5;
+    --bone-300: #e6ddd3;
+    --bone-400: #cfc3b6;
+    --ink-400: #8a7f76;
+    --ink-500: #6b6058;
+    --ink-700: #3a322d;
+    --ink-900: #1b1614;
+
+    /* Accent — clay. Used for fills and emphasis, never for large areas. */
+    --clay-400: #c9735a;
+    --clay-500: #b4543a;
+    --clay-600: #97402b;
+    --clay-700: #7a3322;
+
+    /* Status */
+    --positive-500: #2f6d4f;
+    --negative-500: #a33224;
+    --negative-600: #8a2418;
+
+    /* Semantic — remapped wholesale for dark mode below. */
+    --surface: var(--bone-100);
+    --surface-raised: #ffffff;
+    --surface-sunken: var(--bone-200);
+    --surface-inverse: var(--ink-900);
+
+    --text: var(--ink-900);
+    --text-muted: var(--ink-500);
+    --text-subtle: var(--ink-400);
+    --text-inverse: var(--bone-100);
+
+    --accent: var(--clay-500);
+    --accent-hover: var(--clay-600);
+    --accent-text: var(--clay-700); /* accent used as text on a light surface */
+    --accent-contrast: #ffffff;
+    --accent-wash: #f6e9e4;
+
+    --border: var(--bone-300);
+    --border-strong: var(--bone-400);
+
+    --danger: var(--negative-500);
+    --danger-hover: var(--negative-600);
+    --success: var(--positive-500);
+
+    /* Type */
+    --font-display: 'Fraunces', 'Iowan Old Style', Georgia, serif;
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+    --text-xs: 0.75rem;
+    --text-sm: 0.875rem;
+    --text-base: 1rem;
+    --text-lg: 1.125rem;
+    --text-xl: 1.375rem;
+    --text-2xl: clamp(1.5rem, 1.2rem + 1.4vw, 2rem);
+    --text-3xl: clamp(2rem, 1.5rem + 2.4vw, 3rem);
+    --text-4xl: clamp(2.6rem, 1.6rem + 4.4vw, 4.75rem);
+
+    --tracking-wide: 0.08em;
+    --tracking-wider: 0.16em;
+
+    /* Spacing — 4px base. */
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-5: 1.5rem;
+    --space-6: 2rem;
+    --space-7: 3rem;
+    --space-8: 4rem;
+    --space-9: 6rem;
+
+    /* Radii */
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 16px;
+    --radius-pill: 999px;
+
+    /* Elevation — low-contrast and warm, not grey drop shadows. */
+    --shadow-sm: 0 1px 2px rgba(27, 22, 20, 0.06);
+    --shadow-md: 0 4px 16px rgba(27, 22, 20, 0.08);
+    --shadow-lg: 0 18px 48px rgba(27, 22, 20, 0.12);
+
+    /* Layout */
+    --page-max: 1280px;
+    --gutter: clamp(1rem, 4vw, 4rem);
+    --nav-height: 72px;
+
+    /* Motion */
+    --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+    --duration-fast: 140ms;
+    --duration-base: 240ms;
+    --duration-slow: 420ms;
+}
+
+/* Dark mode: opt-out via data-theme="light", opt-in via data-theme="dark". */
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme='light']) {
+        --surface: #14100f;
+        --surface-raised: #1f1a18;
+        --surface-sunken: #0e0b0a;
+        --surface-inverse: var(--bone-100);
+
+        --text: #f4efea;
+        --text-muted: #b3a79e;
+        --text-subtle: #8a7f76;
+        --text-inverse: var(--ink-900);
+
+        --accent: var(--clay-400);
+        --accent-hover: #d98a72;
+        --accent-text: var(--clay-400);
+        --accent-contrast: #1b1614;
+        --accent-wash: #2b1f1b;
+
+        --border: #322b28;
+        --border-strong: #463d38;
+
+        --danger: #e0705f;
+        --danger-hover: #ec8676;
+        --success: #63a583;
+
+        --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+        --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.45);
+        --shadow-lg: 0 18px 48px rgba(0, 0, 0, 0.55);
+    }
+}
+
+:root[data-theme='dark'] {
+    --surface: #14100f;
+    --surface-raised: #1f1a18;
+    --surface-sunken: #0e0b0a;
+    --surface-inverse: var(--bone-100);
+
+    --text: #f4efea;
+    --text-muted: #b3a79e;
+    --text-subtle: #8a7f76;
+    --text-inverse: var(--ink-900);
+
+    --accent: var(--clay-400);
+    --accent-hover: #d98a72;
+    --accent-text: var(--clay-400);
+    --accent-contrast: #1b1614;
+    --accent-wash: #2b1f1b;
+
+    --border: #322b28;
+    --border-strong: #463d38;
+
+    --danger: #e0705f;
+    --danger-hover: #ec8676;
+    --success: #63a583;
+
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.45);
+    --shadow-lg: 0 18px 48px rgba(0, 0, 0, 0.55);
+}
