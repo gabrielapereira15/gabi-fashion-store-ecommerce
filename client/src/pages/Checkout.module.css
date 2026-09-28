@@ -108,7 +108,7 @@
     gap: var(--space-3);
 }
 
-.items img {
+.thumb {
     width: 56px;
     height: auto;
     aspect-ratio: 3 / 4;

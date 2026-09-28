@@ -8,7 +8,7 @@ import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { formatCents, lineTotalCents } from '../lib/money';
-import { productImage } from '../lib/api';
+import ProductImage from '../components/ProductImage';
 import * as rule from '../lib/validation';
 import styles from './Checkout.module.css';
 
@@ -229,13 +229,11 @@ export default function Checkout() {
                     <ul className={styles.items}>
                         {items.map((item) => (
                             <li key={item.productId}>
-                                <img
-                                    src={productImage(item)}
-                                    alt={item.productName}
+                                <ProductImage
+                                    product={item}
+                                    className={styles.thumb}
                                     width={56}
                                     height={75}
-                                    loading="lazy"
-                                    decoding="async"
                                 />
                                 <div>
                                     <p className={styles.itemName}>{item.productName}</p>

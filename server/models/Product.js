@@ -35,6 +35,22 @@ const productSchema = new mongoose.Schema(
             type: String,
             trim: true,
             default: ''
+        },
+        /**
+         * Optional photo: either an absolute URL, or a path to one of the
+         * images bundled with the client. When it is empty the client falls
+         * back to /images/<productId>.webp, which is how the seeded pieces
+         * find their photos.
+         */
+        image: {
+            type: String,
+            trim: true,
+            default: '',
+            validate: {
+                validator: (value) =>
+                    value === '' || /^(https?:\/\/|\/)/.test(value),
+                message: 'Image must be an absolute URL or a path starting with /'
+            }
         }
     },
     { timestamps: true }

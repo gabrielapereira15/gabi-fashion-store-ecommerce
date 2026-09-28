@@ -90,6 +90,36 @@ test.describe('products', () => {
     test('updating a product that does not exist returns 404', async () => {
         await request(app).put('/api/products/ghost').send({ value: 10 }).expect(404);
     });
+
+    test('stores a photo, as a bundled path or an absolute URL', async () => {
+        await request(app)
+            .post('/api/products')
+            .send({ ...sampleProduct, image: '/images/suit7.webp' })
+            .expect(201);
+
+        const listed = await request(app).get('/api/products/suit1').expect(200);
+        assert.equal(listed.body.image, '/images/suit7.webp');
+
+        const updated = await request(app)
+            .put('/api/products/suit1')
+            .send({ image: 'https://example.com/dress.jpg' })
+            .expect(200);
+        assert.equal(updated.body.image, 'https://example.com/dress.jpg');
+    });
+
+    test('defaults the photo to an empty string when none is given', async () => {
+        const created = await request(app).post('/api/products').send(sampleProduct).expect(201);
+        // The client then falls back to /images/<productId>.webp.
+        assert.equal(created.body.image, '');
+    });
+
+    test('rejects a photo that is neither a URL nor a rooted path', async () => {
+        const resp = await request(app)
+            .post('/api/products')
+            .send({ ...sampleProduct, image: 'javascript:alert(1)' })
+            .expect(400);
+        assert.match(resp.body.error, /absolute URL or a path/);
+    });
 });
 
 test.describe('auth', () => {

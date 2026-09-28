@@ -1,0 +1,17 @@
+.fallback {
+    display: grid;
+    place-items: center;
+    background: var(--accent-wash);
+    color: var(--accent-text);
+    /* Makes this tile the query container for the letter inside it. */
+    container-type: inline-size;
+    user-select: none;
+}
+
+.fallback span {
+    font-family: var(--font-display);
+    /* Scales with the tile, so one component serves a 40px admin row thumb
+       and a full-bleed product card. */
+    font-size: clamp(0.75rem, 38cqw, 4rem);
+    line-height: 1;
+}

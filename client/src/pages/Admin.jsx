@@ -1,10 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
 
 import Field from '../components/Field';
+import PhotoField from '../components/PhotoField';
+import ProductImage from '../components/ProductImage';
 import EmptyState from '../components/EmptyState';
 import { AlertIcon, EditIcon, PlusIcon, TrashIcon, CloseIcon } from '../components/icons';
 import { useToast } from '../context/ToastContext';
-import { productsApi, errorMessage, productImage } from '../lib/api';
+import { productsApi, errorMessage } from '../lib/api';
 import { formatPrice } from '../lib/money';
 import styles from './Admin.module.css';
 
@@ -14,7 +16,8 @@ const BLANK = {
     productType: '',
     productColor: '',
     value: '',
-    description: ''
+    description: '',
+    image: ''
 };
 
 /** Validated inline rather than through useForm — the id rule depends on mode. */
@@ -32,6 +35,11 @@ function validateProduct(values, isEditing) {
     const value = Number(values.value);
     if (values.value === '' || Number.isNaN(value)) errors.value = 'Price is required.';
     else if (value < 0) errors.value = 'Price cannot be negative.';
+
+    const image = values.image.trim();
+    if (image && !/^(https?:\/\/|\/)/.test(image)) {
+        errors.image = 'Enter a full URL starting with https://, or pick one above.';
+    }
 
     return errors;
 }
@@ -78,7 +86,8 @@ export default function Admin() {
             productType: product.productType,
             productColor: product.productColor,
             value: String(product.value),
-            description: product.description ?? ''
+            description: product.description ?? '',
+            image: product.image ?? ''
         });
         setErrors({});
         setEditingId(product.productId);
@@ -101,7 +110,8 @@ export default function Admin() {
         const payload = {
             ...draft,
             productId: draft.productId.trim().toLowerCase(),
-            value: Number(draft.value)
+            value: Number(draft.value),
+            image: draft.image.trim()
         };
 
         setSaving(true);
@@ -211,13 +221,11 @@ export default function Admin() {
                                     >
                                         <td>
                                             <div className={styles.piece}>
-                                                <img
-                                                    src={productImage(product)}
-                                                    alt=""
+                                                <ProductImage
+                                                    product={product}
+                                                    className={styles.thumb}
                                                     width={40}
                                                     height={53}
-                                                    loading="lazy"
-                                                    decoding="async"
                                                 />
                                                 <div>
                                                     <p className={styles.pieceName}>
@@ -296,7 +304,7 @@ export default function Admin() {
                                 hint={
                                     isEditing
                                         ? 'The id cannot be changed.'
-                                        : 'Also the image filename: /images/<id>.webp'
+                                        : 'Lowercase letters, numbers and dashes. Used in the URL.'
                                 }
                             />
                             <Field
@@ -335,6 +343,18 @@ export default function Admin() {
                                 error={errors.value}
                                 placeholder="189"
                             />
+                            <PhotoField
+                                value={draft.image}
+                                productId={draft.productId}
+                                error={errors.image}
+                                onChange={(image) => {
+                                    setDraft((current) => ({ ...current, image }));
+                                    if (errors.image) {
+                                        setErrors((current) => ({ ...current, image: undefined }));
+                                    }
+                                }}
+                            />
+
                             <Field
                                 label="Description"
                                 as="textarea"

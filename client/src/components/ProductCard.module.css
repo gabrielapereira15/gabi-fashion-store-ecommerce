@@ -13,26 +13,15 @@
     aspect-ratio: 3 / 4;
 }
 
-.media img {
+.photo {
     width: 100%;
     height: 100%;
     object-fit: cover;
     transition: transform var(--duration-slow) var(--ease-out);
 }
 
-.card:hover .media img {
+.card:hover .photo {
     transform: scale(1.04);
-}
-
-.fallback {
-    display: grid;
-    place-items: center;
-    width: 100%;
-    height: 100%;
-    background: var(--accent-wash);
-    color: var(--accent-text);
-    font-family: var(--font-display);
-    font-size: 4rem;
 }
 
 .add {

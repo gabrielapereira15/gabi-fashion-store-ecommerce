@@ -63,6 +63,25 @@ export const authApi = {
     login: (payload) => api.post('/auth/login', payload).then((r) => r.data.user)
 };
 
-/** Image path for a product, with a shared placeholder when one is missing. */
-export const productImage = (product) =>
-    product?.productId ? `/images/${String(product.productId).toLowerCase()}.webp` : '/placeholder.svg';
+/**
+ * Resolves a product's photo.
+ *
+ * An explicit `image` (set in the admin panel — either a bundled path or an
+ * absolute URL) wins. Otherwise it falls back to the filename convention that
+ * the seeded catalogue relies on: /images/<productId>.webp.
+ * Returns '' when there is nothing to show, so <ProductImage> renders its tile.
+ */
+export const productImage = (product) => {
+    const explicit = product?.image?.trim();
+    if (explicit) return explicit;
+
+    return product?.productId
+        ? `/images/${String(product.productId).toLowerCase()}.webp`
+        : '';
+};
+
+/** The photos shipped with the client, offered as choices in the admin panel. */
+export const bundledImages = demoProducts.map((product) => ({
+    path: `/images/${product.productId}.webp`,
+    label: product.productName
+}));

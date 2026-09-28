@@ -84,7 +84,9 @@
     gap: var(--space-3);
 }
 
-.piece img {
+/* Matches both the <img> and the lettered tile <ProductImage> falls back to. */
+.thumb {
+    flex: 0 0 auto;
     width: 40px;
     height: auto;
     aspect-ratio: 3 / 4;

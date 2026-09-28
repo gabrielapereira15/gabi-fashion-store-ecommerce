@@ -33,7 +33,8 @@ router.get(
 router.post(
     '/',
     asyncHandler(async (req, resp) => {
-        const { productId, productName, productType, productColor, value, description } = req.body;
+        const { productId, productName, productType, productColor, value, description, image } =
+            req.body;
 
         const product = await Product.create({
             productId,
@@ -41,7 +42,8 @@ router.post(
             productType,
             productColor,
             value,
-            description
+            description,
+            image
         });
 
         resp.status(201).json(product);
@@ -52,11 +54,11 @@ router.post(
 router.put(
     '/:productId',
     asyncHandler(async (req, resp) => {
-        const { productName, productType, productColor, value, description } = req.body;
+        const { productName, productType, productColor, value, description, image } = req.body;
 
         const product = await Product.findOneAndUpdate(
             { productId: req.params.productId.toLowerCase() },
-            { productName, productType, productColor, value, description },
+            { productName, productType, productColor, value, description, image },
             // Mongoose 6+ strips undefined keys, so omitted fields keep their value.
             { new: true, runValidators: true }
         );

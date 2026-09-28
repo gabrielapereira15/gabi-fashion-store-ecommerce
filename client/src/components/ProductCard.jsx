@@ -1,12 +1,11 @@
 import { useState } from 'react';
 import { formatPrice } from '../lib/money';
-import { productImage } from '../lib/api';
+import ProductImage from './ProductImage';
 import { CheckIcon } from './icons';
 import styles from './ProductCard.module.css';
 
 export default function ProductCard({ product, onAdd, priority = false }) {
     const [added, setAdded] = useState(false);
-    const [imageFailed, setImageFailed] = useState(false);
 
     const handleAdd = () => {
         onAdd(product);
@@ -18,22 +17,13 @@ export default function ProductCard({ product, onAdd, priority = false }) {
     return (
         <article className={styles.card}>
             <div className={styles.media}>
-                {imageFailed ? (
-                    <div className={styles.fallback} aria-hidden="true">
-                        {product.productName.charAt(0)}
-                    </div>
-                ) : (
-                    <img
-                        src={productImage(product)}
-                        alt={product.productName}
-                        width={900}
-                        height={1200}
-                        loading={priority ? 'eager' : 'lazy'}
-                        decoding="async"
-                        fetchPriority={priority ? 'high' : 'auto'}
-                        onError={() => setImageFailed(true)}
-                    />
-                )}
+                <ProductImage
+                    product={product}
+                    className={styles.photo}
+                    width={900}
+                    height={1200}
+                    priority={priority}
+                />
 
                 <button
                     type="button"

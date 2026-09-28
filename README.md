@@ -36,6 +36,7 @@ and an admin panel over the REST API. Light and dark themes, responsive to 360px
 
 **Admin** (`/admin`)
 - Table of the live catalogue with create, edit and delete
+- Photo picker: choose one of the bundled shots or paste any image URL, with a live preview
 - Confirmation dialog before deleting
 - Exercises every product endpoint
 
@@ -202,6 +203,18 @@ curl -X POST http://localhost:8080/api/products \
   -H "Content-Type: application/json" \
   -d '{"productId":"suit13","productName":"Silk Wrap Dress","productType":"Dresses","productColor":"Ivory","value":189}'
 ```
+
+**Product fields**
+
+| Field | Type | Notes |
+|---|---|---|
+| `productId` | string | Required, unique, lowercased. Used in the URL. |
+| `productName` | string | Required |
+| `productType` | string | Required — this is what the storefront filters by |
+| `productColor` | string | Required |
+| `value` | number | Required, in dollars; totals are computed in cents |
+| `description` | string | Optional |
+| `image` | string | Optional. An absolute URL, or a path like `/images/suit7.webp`. When empty the storefront looks for `/images/<productId>.webp`, and shows a lettered tile if that is missing too. |
 
 ### Auth and users
 

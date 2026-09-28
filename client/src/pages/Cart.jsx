@@ -5,7 +5,7 @@ import { BagIcon, MinusIcon, PlusIcon, TrashIcon, LockIcon } from '../components
 import { useCart } from '../context/CartContext';
 import { useToast } from '../context/ToastContext';
 import { formatCents, formatPrice, lineTotalCents, SHIPPING_THRESHOLD_CENTS } from '../lib/money';
-import { productImage } from '../lib/api';
+import ProductImage from '../components/ProductImage';
 import styles from './Cart.module.css';
 
 export default function Cart() {
@@ -51,14 +51,11 @@ export default function Cart() {
                     <ul className={styles.list}>
                         {items.map((item) => (
                             <li key={item.productId} className={styles.item}>
-                                <img
+                                <ProductImage
+                                    product={item}
                                     className={styles.thumb}
-                                    src={productImage(item)}
-                                    alt={item.productName}
                                     width={180}
                                     height={240}
-                                    loading="lazy"
-                                    decoding="async"
                                 />
 
                                 <div className={styles.details}>
