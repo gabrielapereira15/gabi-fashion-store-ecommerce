@@ -6,7 +6,7 @@
  */
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-// Accepts 226-899-0000, (226) 899 0000, +1 226 899 0000, 2268990000.
+// Accepts 250-870-0000, (250) 870 0000, +1 250 870 0000, 2508700000.
 const PHONE = /^\+?\d{0,2}[\s.-]?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/;
 const CARD = /^\d{13,19}$/;
 const EXPIRY = /^(0[1-9]|1[0-2])\s?\/\s?(\d{2}|\d{4})$/;
@@ -26,7 +26,7 @@ export const password = (value) => {
 
 export const phone = (value) => {
     if (!String(value ?? '').trim()) return 'Phone number is required.';
-    return PHONE.test(value.trim()) ? null : 'Enter a valid phone number, e.g. 226-899-0000.';
+    return PHONE.test(value.trim()) ? null : 'Enter a valid phone number, e.g. 250-870-0000.';
 };
 
 export const creditCard = (value) => {

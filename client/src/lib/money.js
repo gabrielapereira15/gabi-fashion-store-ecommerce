@@ -40,7 +40,7 @@ export const SHIPPING_FLAT_CENTS = 995;
 export const shippingCents = (subtotal) =>
     subtotal === 0 || subtotal >= SHIPPING_THRESHOLD_CENTS ? 0 : SHIPPING_FLAT_CENTS;
 
-/** 13% HST — the shop is set in Kitchener, Ontario. */
+/** 13% HST — the shop is set in Ottawa, Ontario. */
 export const TAX_RATE = 0.13;
 
 export const taxCents = (subtotal) => Math.round(subtotal * TAX_RATE);

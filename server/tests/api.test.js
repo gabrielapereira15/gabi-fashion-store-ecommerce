@@ -21,8 +21,8 @@ const sampleProduct = {
 
 const sampleUser = {
     name: 'Ada Lovelace',
-    address: '15 Wellington Street, Kitchener',
-    phone: '226-899-0000',
+    address: '15 Example Street, Ottawa',
+    phone: '250-870-0000',
     email: 'ada@example.com',
     password: 'correct-horse-battery'
 };

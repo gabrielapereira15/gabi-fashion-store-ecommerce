@@ -154,7 +154,7 @@ export default function Checkout() {
                                 label="Phone"
                                 type="tel"
                                 autoComplete="tel"
-                                placeholder="226-899-0000"
+                                placeholder="250-870-0000"
                                 {...form.fieldProps('phone')}
                             />
                         </div>

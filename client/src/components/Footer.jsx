@@ -30,11 +30,11 @@ export default function Footer() {
                 <div className={styles.column}>
                     <h2 className="eyebrow">Visit</h2>
                     <address className={styles.address}>
-                        15 Wellington Street
+                        15 Example Street
                         <br />
-                        Kitchener, ON, Canada
+                        Ottawa, ON, Canada
                         <br />
-                        (226) 899-XXXX
+                        (250) 870-XXXX
                     </address>
                 </div>
             </div>

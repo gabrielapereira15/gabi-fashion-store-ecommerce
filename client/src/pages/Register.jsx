@@ -77,7 +77,7 @@ export default function Register() {
                             <Field
                                 label="Address"
                                 autoComplete="street-address"
-                                placeholder="15 Wellington Street, Kitchener"
+                                placeholder="15 Example Street, Ottawa"
                                 {...form.fieldProps('address')}
                             />
 
@@ -85,7 +85,7 @@ export default function Register() {
                                 label="Phone"
                                 type="tel"
                                 autoComplete="tel"
-                                placeholder="226-899-0000"
+                                placeholder="250-870-0000"
                                 {...form.fieldProps('phone')}
                             />
 
